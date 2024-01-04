@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="users-list">
+    <!-- Thông tin người dùng sẽ được hiển thị ở đây -->
+  </div>
+
+  <script>
+    const numberOfUsers = 5; // Số người dùng cần hiển thị
+
+    // Lấy thông tin từ API và hiển thị cho mỗi người dùng
+    for (let i = 0; i < numberOfUsers; i++) {
+      fetch('https://randomuser.me/api/')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const user = data.results[0]; // Lấy thông tin người dùng đầu tiên từ kết quả
+
+          // Hiển thị thông tin người dùng trên trang web
+          const usersList = document.getElementById('users-list');
+          const userElement = document.createElement('div');
+          userElement.innerHTML = `
+            <p>Name: ${user.name.first} ${user.name.last}</p>
+            <p>Email: ${user.email}</p>
+            <img src="${user.picture.large}" alt="User Picture">
+            <!-- Thêm các thông tin khác cần hiển thị -->
+          `;
+          usersList.appendChild(userElement);
+        })
+        .catch(error => {
+          // Xử lý lỗi nếu có
+          console.error('Có lỗi xảy ra:', error);
+        });
+    }
+  </script>
+</body>
+</html>
